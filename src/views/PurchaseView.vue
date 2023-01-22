@@ -8,13 +8,16 @@ const store = useStore();
 const genre = ref(28);
 const showModal = ref(false);
 const selectedId = ref(0);
+
 const openModal = (id) => {
   showModal.value = true;
   selectedId.value = id;
 };
+
 const closeModal = () => {
   showModal.value = false;
 };
+
 const getGenres = async () => {
   await store.getMovies(genre.value);
 };
@@ -49,9 +52,11 @@ const getGenres = async () => {
     <option value="10752">War</option>
     <option value="37">Western</option>
   </select>
+
   <RouterLink to="/cart" custom v-slot="{ navigate }">
     <button @click="navigate" role="link">Cart</button>
   </RouterLink>
+
   <div class="purchase-container">
     <img
       v-for="movie in store.movies"
@@ -61,6 +66,7 @@ const getGenres = async () => {
     />
     <SiteModal v-if="showModal" @toggleModal="closeModal()" :id="selectedId" />
   </div>
+  
   <div>
     <SiteFooter />
   </div>

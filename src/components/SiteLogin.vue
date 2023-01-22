@@ -4,10 +4,12 @@ import SiteModal from "./SiteModaltesting.vue";
 
 const showModal = ref(false);
 const selectedId = ref(0);
+
 const openModal = (id) => {
   showModal.value = true;
   selectedId.value = id;
 };
+
 const closeModal = () => {
   showModal.value = false;
 };
@@ -21,4 +23,5 @@ const closeModal = () => {
   <SiteModal v-if="showModal" @toggleModal="closeModal()" :id="selectedId" />
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

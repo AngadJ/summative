@@ -12,4 +12,5 @@ import SiteFooter from "../components/SiteFooter.vue";
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

@@ -5,13 +5,15 @@ import { useStore } from "../store/index.js";
 const store = useStore();
 const props = defineProps(["id"]);
 const emits = defineEmits(["toggleModal"]);
-const info = await axios.get(`https://api.themoviedb.org/3/movie/${props.id}`, {
-  params: {
-    api_key: "f944b70daa59b60504fca0c383e63483",
-    append_to_response: "videos",
-  },
-});
-console.log(info);
+
+let data = (
+  await axios.get(`https://api.themoviedb.org/3/movie/${props.id}`, {
+    params: {
+      api_key: "f944b70daa59b60504fca0c383e63483",
+      append_to_response: "videos",
+    },
+  })
+).data;
 </script>
 
 <template>
@@ -20,18 +22,18 @@ console.log(info);
       <div class="modal-inner-container">
         <button class="close-button" @click="emits('toggleModal')">X</button>
         <img
-          :src="`https://image.tmdb.org/t/p/w500${info.data.poster_path}`"
+          :src="`https://image.tmdb.org/t/p/w500${data.poster_path}`"
           alt=""
         />
-        <p>{{ info.data.original_title }}</p>
-        <p>Release Date: {{ info.data.release_date }}</p>
-        <p>Rating: {{ info.data.vote_average }} Stars</p>
-        <p>Popularity: {{ info.data.popularity }}</p>
-        <p>Box Office: {{ info.data.revenue }} USD</p>
+        <p>{{ data.original_title }}</p>
+        <p>Release Date: {{ data.release_date }}</p>
+        <p>Rating: {{ data.vote_average }} Stars</p>
+        <p>Popularity: {{ data.popularity }}</p>
+        <p>Box Office: {{ data.revenue }} USD</p>
         <p>
           <a
             :href="`https://www.youtube.com/embed/${
-              info.data.videos.results
+              data.videos.results
                 .filter((video) => video.type === 'Trailer')
                 .at(0).key
             }`"
@@ -40,18 +42,18 @@ console.log(info);
             Here to View the Movie Trailer!
           </a>
         </p>
-        <button
-          @click="
+        <div class="purchaseButton-container">
+          <button @click="
             store.addToCart(props.id, {
-              id: info.data.id,
-              poster: info.data.poster_path,
-              title: info.data.title,
-              date: info.data.release_date,
+              id: data.id,
+              poster: data.poster_path,
+              title: data.title,
+              date: data.release_date,
             })
-          "
-        >
-          Add To Cart
-        </button>
+          ">
+            Add To Cart
+          </button>
+        </div>
       </div>
     </div>
   </Teleport>
